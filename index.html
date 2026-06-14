@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Predicción Iris - MLOps</title>
+</head>
+<body>
+  <h2>Predicción de flor Iris</h2>
+
+  <label>Sepal length:</label><br>
+  <input id="sepal_length" type="number" step="0.1" value="5.1"><br><br>
+
+  <label>Sepal width:</label><br>
+  <input id="sepal_width" type="number" step="0.1" value="3.5"><br><br>
+
+  <label>Petal length:</label><br>
+  <input id="petal_length" type="number" step="0.1" value="1.4"><br><br>
+
+  <label>Petal width:</label><br>
+  <input id="petal_width" type="number" step="0.1" value="0.2"><br><br>
+
+  <button onclick="predecir()">Predecir</button>
+
+  <h3>Resultado:</h3>
+  <pre id="resultado"></pre>
+
+  <script>
+    async function predecir() {
+      const datos = {
+        sepal_length: parseFloat(document.getElementById("sepal_length").value),
+        sepal_width: parseFloat(document.getElementById("sepal_width").value),
+        petal_length: parseFloat(document.getElementById("petal_length").value),
+        petal_width: parseFloat(document.getElementById("petal_width").value)
+      };
+
+      const response = await fetch("http://iris-api-bairon.d8dxf9esfqfqasfd.eastus.azurecontainer.io:5000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datos)
+      });
+
+      const resultado = await response.json();
+      document.getElementById("resultado").textContent = JSON.stringify(resultado, null, 2);
+    }
+  </script>
+</body>
+</html>
